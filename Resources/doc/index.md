@@ -221,7 +221,40 @@ class User extends BaseUser
 }
 ```
 
-**d) Propel User class**
+**d) CouchDB User class**
+
+If you're persisting your users via the Doctrine CouchDB ODM, then your `User`
+class should live in the `Document` namespace of your bundle and look like
+this to start:
+
+``` php
+<?php
+// src/Acme/UserBundle/Document/User.php
+
+namespace Acme\UserBundle\Document;
+
+use FOS\UserBundle\Document\User as BaseUser;
+use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCR;
+
+/**
+ * @PHPCR\Document()
+ */
+class User extends BaseUser
+{
+    /**
+     * @PHPCR\Id(strategy="repository")
+     */
+    protected $id;
+
+    public function __construct()
+    {
+        parent::__construct();
+        // your own logic
+    }
+}
+```
+
+**e) Propel User class**
 
 If you don't want to add your own logic in your user class, you can simply use
 `FOS\UserBundle\Propel\User` as user class and you don't have to create
